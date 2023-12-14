@@ -1,8 +1,9 @@
 const yol = document.getElementById("resim-yolu");
 
 // mouse tıklama fonksiyonu
-window.onmousedown = e =>  yol.dataset.mouseDownAt = e.clientX;
-
+window.onmousedown = e => {
+    yol.dataset.mouseDownAt = e.clientX;
+}
 
 // her mouse komutu bittiğinde imlecin kaldığı yeri depolamalıyız
 window.onmouseup = () => {
@@ -30,9 +31,7 @@ window.onmousemove = e => {
 
         yol.dataset.yuzde = yeniYuzde;
 
-        yol.animate({
-            transform: `translate(${yeniYuzde}%, -50%)`
-        }, {duration: 1200, fill : "forwards"})
+        yol.style.transform = `translate(${yeniYuzde}%, -50%)`;
 }
 
 for (const img of yol.getElementsByClassName("img")) {
