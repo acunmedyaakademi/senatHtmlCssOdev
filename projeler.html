@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="projeler.css">
+    <title>Projeler</title>
+</head>
+<body>
+
+    <h1>Projeler</h1>
+
+    <table id="projectTable">
+        <thead>
+            <tr>
+                <th>Proje Adı</th>
+                <th>Tarih</th>
+                <th>Durum</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Projeler burada JavaScript ile eklenecek -->
+        </tbody>
+    </table>
+
+    <script>
+        const projects = [
+            { ad: 'Slot Machine', tarih: '01-12-2023', durum: 'Tamamlandı' },
+            { ad: 'Calculator', tarih: '06-12-2023', durum: 'Devam Ediyor' },
+            { ad: 'HTML-CSS', tarih: '09-12-2023', durum: 'Devam ediyor' }
+        ];
+
+        // Tabloya projeleri ekleyen fonksiyon
+        function populateTable() {
+            const tableBody = document.querySelector("#projectTable tbody");
+
+            projects.forEach(project => {
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>${project.ad}</td>
+                    <td>${project.tarih}</td>
+                    <td>${project.durum}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Sayfa yüklendiğinde tabloyu doldur
+        document.addEventListener("DOMContentLoaded", populateTable);
+    </script>
+
+</body>
+</html>

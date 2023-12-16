@@ -1,41 +1,40 @@
-const yol = document.getElementById("resim-yolu");
+const track = document.getElementById("image-track");
 
-// mouse tıklama fonksiyonu
-window.onmousedown = e => {
-    yol.dataset.mouseDownAt = e.clientX;
+const handleOnDown = e => track.dataset.mouseDownAt = e.clientX;
+
+const handleOnUp = () => {
+  track.dataset.mouseDownAt = "0";  
+  track.dataset.prevPercentage = track.dataset.percentage;
 }
 
-// her mouse komutu bittiğinde imlecin kaldığı yeri depolamalıyız
-window.onmouseup = () => {
-    yol.dataset.mouseDownAt = "0";
-    yol.dataset.oncekiYuzde = yol.dataset.yuzde;
-}
-
-window.onmousemove = e => {
-
-    // mouse ile komut verildiğini anlamak için
-    if (yol.dataset.mouseDownAt === "0") return;
-
-    // İmlecin geldiği konumu bilmek için başlanguç noktasından şu anki konumu çıkartıyoruz.
-    const mouseDelta = parseFloat(yol.dataset.mouseDownAt) - e.clientX,
-      
-        // makismum uzaklık bulunduğumuz pencerenin yarısı kadar.  
+const handleOnMove = e => {
+  if(track.dataset.mouseDownAt === "0") return;
+  
+  const mouseDelta = parseFloat(track.dataset.mouseDownAt) - e.clientX,
         maxDelta = window.innerWidth / 2;
-
-    // mousedelta ve maxdeltanın bölümü decimal bir rakam verir ve 100le çarpımı yüzde olarak hesaplamamızı sağlar. 
-    const yuzde = (mouseDelta / maxDelta) * -100,
-
-    // yüzde için 0 değişkeni oluşturuldu ve yüzdelik kaymayı son kayma oranına ekelyerek yeni yüzdeyi bulduk. Bu şekilde mouse komutu bırakıldığında işlem başa dönmeyecek.
-        yeniYuzde = parseFloat(yol.dataset.oncekiYuzde) + yuzde,
-        oncekiYuzde = Math.max(Math.min(yeniYuzde, 0), -100);
-
-        yol.dataset.yuzde = yeniYuzde;
-
-        yol.style.transform = `translate(${yeniYuzde}%, -50%)`;
+  
+  const percentage = (mouseDelta / maxDelta) * -100,
+        nextPercentageUnconstrained = parseFloat(track.dataset.prevPercentage) + percentage,
+        nextPercentage = Math.max(Math.min(nextPercentageUnconstrained, 0), -100);
+  
+  track.dataset.percentage = nextPercentage;
+  
+  track.style.transform = `translate(${nextPercentage}%, -50%)`;
+  
+  const images = track.getElementsByClassName("image");
+  for (const image of images) {
+    image.style.objectPosition = `${100 + nextPercentage}% center`;
+  }
 }
 
-for (const img of yol.getElementsByClassName("img")) {
-    img.animate({
-        objectPosition: `${yeniYuzde + 100}% center`
-    }, {duration:1200, fill: "forwards"})
-}
+window.onmousedown = e => handleOnDown(e);
+
+window.ontouchstart = e => handleOnDown(e.touches[0]);
+
+window.onmouseup = e => handleOnUp(e);
+
+window.ontouchend = e => handleOnUp(e.touches[0]);
+
+window.onmousemove = e => handleOnMove(e);
+
+window.ontouchmove = e => handleOnMove(e.touches[0]);

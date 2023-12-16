@@ -1,0 +1,15 @@
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th, td {
+    border: 5px solid #000000; /* Kenarlık rengi */
+    padding: 5px;
+    text-align: left;
+}
+
+th {
+    background-color: #3498db; /* Başlık arkaplan rengi */
+    color: black;
+}
